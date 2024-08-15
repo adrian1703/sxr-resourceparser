@@ -15,3 +15,17 @@ job done with some quality cleanup.
 ### Spire.PDF
 Does not do a good job at converting PDF to proper HTML. Not gonna 
 investigate further.
+
+### Maybe scratch python and parse xsd
+Proper xsd parsing is not gonna be easy but maybe yields the 
+best results
+
+### Tryouts
+Ubl structure mapped to BT-Fields
+
+https://github.com/OpenPEPPOL/peppol-bis-invoice-3/blob/master/structure/syntax/ubl-invoice.xml
+
+
+Good repo
+
+https://github.com/OpenPEPPOL/peppol-bis-invoice-3/tree/master
