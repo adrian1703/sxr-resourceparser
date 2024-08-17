@@ -3,7 +3,7 @@ from PyPDF2 import PdfReader
 import pandas as pd
 
 #%% read
-path = "./../../resources/xrechnung-3.0.2-bundle-2024-06-20/XRechnung-v3.0.2.pdf"
+path = "./../resources/xrechnung-3.0.2-bundle-2024-06-20/XRechnung-v3.0.2.pdf"
 reader = PdfReader(path)
 pages = reader.pages[37:42]
 pages = [page.extract_text() for page in pages]
@@ -26,4 +26,4 @@ df = df.sort_values(by=['Prefix', 'Numeric'])
 df.drop(['Prefix', 'Numeric'], axis=1, inplace=True)
 print(df)
 #%% save to csv
-df.to_csv('output.csv', index=False)
+df.to_csv('code_desc.csv', index=False)
