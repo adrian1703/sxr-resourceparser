@@ -10,8 +10,15 @@ List<Node> references = root.'**'.findAll {Node node ->
             name.localPart == 'Reference' &&
             node.'@type' == 'BUSINESS_TERM')
 }
-references.sort { a, b ->
-    a.text().replaceAll("\\D", "").toInteger() <=> b.text().replaceAll("\\D", "").toInteger()
+references.sort  { Node a, Node b ->
+    String atext = a.text()
+    String btext = b.text()
+    def prefixCompare = atext.substring(0, 2) <=> btext.substring(0, 2)
+    if (prefixCompare == 0) {
+        atext.replaceAll("\\D", "").toInteger() <=> btext.replaceAll("\\D", "").toInteger()
+    } else {
+        prefixCompare
+    }
 }
 println(references.size())
 references.each {println it.text()}
