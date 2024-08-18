@@ -10,6 +10,8 @@ List<Node> references = root.'**'.findAll {Node node ->
             name.localPart == 'Reference' &&
             node.'@type' == 'BUSINESS_TERM')
 }
+
+//noinspection GroovyAssignabilityCheck
 references.sort  { Node a, Node b ->
     String atext = a.text()
     String btext = b.text()
