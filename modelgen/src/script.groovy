@@ -5,20 +5,8 @@ import groovy.namespace.QName
 
 String path = "./../../resources/peppol-bis-invoice-3/structure/syntax"
 String rootFile = "$path/ubl-invoice.xml"
-XmlParser parser = new XmlParser(namespaceAware: false)
-Node root = parser.parse(rootFile)
-//resolving includes
-List<Node> includeNodes = root.'**'.findAll{ Node node ->
-    def name = node.name()
-    return (name instanceof QName &&
-            name.localPart == 'Include')
-}
-includeNodes.each { Node node ->
-    String includePath = node.text()
-    Node nodeToInclude = parser.parse("$path/$includePath")
-    node.replaceNode(nodeToInclude)
-}
 
+Node root = Utils.readXml("ubl-invoice.xml")
 List<Node> references = root.'**'.findAll {Node node ->
     def name = node.name()
     return (name instanceof QName &&
