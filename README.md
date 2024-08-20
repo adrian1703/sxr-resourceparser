@@ -11,7 +11,14 @@ https://github.com/protocolbuffers/protobuf/releases
 
 For Windows: Download + add to path
 
-Verify with ```protoc -h```
+Verify with 
+```bash 
+protoc -h
+```
 
 ## Usage
 1. Generate proto-model using the **modelgen** Modul(Groovy).
+2. Generate language specific code.
+```bash
+ protoc --kotlin_out=modelgen/kotlin_out --proto_path=modelgen/proto-model test.proto
+```
