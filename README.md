@@ -20,5 +20,5 @@ protoc -h
 1. Generate proto-model using the **modelgen** Modul(Groovy).
 2. Generate language specific code.
 ```bash
- protoc --kotlin_out=modelgen/kotlin_out --proto_path=modelgen/proto-model test.proto
+ protoc --kotlin_out=modelgen/kotlin_out --java_out=modelgen/kotlin_out --proto_path=modelgen/proto-model DELIVERY_INFORMATION.proto
 ```

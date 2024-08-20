@@ -24,13 +24,14 @@ String attribString = elements.collect {
 String template =
         """syntax = "proto3";
 package com.example;
+option java_multiple_files = true;
 
 message $type {
 $attribString
 }
 """
 println template
-def file = new File("./../proto-model/test.proto")
+def file = new File("./../proto-model/${type}.proto")
 file.write template
 
 
