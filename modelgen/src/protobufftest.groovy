@@ -6,7 +6,7 @@ import groovy.xml.slurpersupport.GPathResult
 /* ========== template attributes =============== */
 String name
 String type
-int count = 0
+int count = 1
 
 /* ========== script execution    =============== */
 XmlSlurper sluper = new XmlSlurper(false, false) //using the sluper because that way we don't need to deal with namespaces
@@ -18,7 +18,7 @@ List elements =  root.'**'.findAll { it.Reference.@type == "BUSINESS_TERM" }
 
 String attribString = elements.collect {
     name = (it.Name as String).replace(" ", "_")
-    return "\t required string $name = ${count++};"
+    return "\t string $name = ${count++};"
 }.join("\n")
 
 String template =
@@ -30,4 +30,7 @@ $attribString
 }
 """
 println template
+def file = new File("./../proto-model/test.proto")
+file.write template
+
 
