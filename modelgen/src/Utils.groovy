@@ -1,5 +1,7 @@
 import groovy.xml.XmlParser
 import groovy.namespace.QName
+import groovy.xml.slurpersupport.GPathResult
+
 /* only work with patch-2 of my fork */
 class Utils {
 
@@ -20,5 +22,9 @@ class Utils {
             node.replaceNode(nodeToInclude)
         }
         return root
+    }
+
+    static List getElementsWithDataTypes(GPathResult node){
+        return node.'**'.findAll{ it.name() == "Element" && it.DataType.text() != ""}
     }
 }
