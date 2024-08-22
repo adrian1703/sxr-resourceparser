@@ -1,3 +1,4 @@
+import groovy.xml.XmlParser
 import groovy.xml.XmlSlurper
 import groovy.xml.XmlUtil
 import groovy.xml.slurpersupport.GPathResult
@@ -5,23 +6,26 @@ import groovy.xml.slurpersupport.GPathResult
 
 /* ========== template attributes =============== */
 String name
-String term
-String type
+String parent
+String term = ''
+String type = ''
 int count = 1
 
-/* ========== script execution    =============== */
-XmlSlurper sluper = new XmlSlurper(false, false) //using the sluper because that way we don't need to deal with namespaces
-Node node         = Utils.readXml("ubl-invoice.xml")
-GPathResult root  = sluper.parseText(XmlUtil.serialize(node))
+/* ========== helper attributes   =============== */
+Node        root
 
-def elements = Utils.getElementsWithDataTypes(root)
+/* ========== script execution    =============== */
+root   = Utils.readXml("ubl-invoice.xml")
+new Node(root.Document[0], 'Name', 'INVOICE')
+def elements = root.Document.'*'
 elements.each {
-    name = it.Name
-    term = it.Term
-    type = it.DataType
-    println([name, term, type])
+    name   = it.Name.text()
+    parent = it.parent().Name.text()
+    term   = it.Term.text()
+    type   = it.DataType.text()
+    println([parent, name, term, type, it.name()])
 }
 println elements.size()
-
+//println XmlUtil.serialize(root)
 
 
