@@ -18,14 +18,39 @@ Node        root
 root   = Utils.readXml("ubl-invoice.xml")
 new Node(root.Document[0], 'Name', 'INVOICE')
 def elements = root.Document.'*'
-elements.each {
-    name   = it.Name.text()
-    parent = it.parent().Name.text()
-    term   = it.Term.text()
-    type   = it.DataType.text()
-    println([parent, name, term, type, it.name()])
+List basicAttribs = []
+List complexAttribs = []
+Utils.fillLists(elements, basicAttribs, complexAttribs)
+
+def createPojoFile(Node node){
+    List basicAttribs = []
+    List complexAttribs = []
+    Utils.fillLists(node.'*', basicAttribs, complexAttribs)
+    String className = Utils.convertToPascalCase node.Name.text()
+    String packageName = 'sxr.model'
+    String template = """package $packageName;
+${complexAttribs.collect{"import $packageName.${it.className};"}.join("\n")}
+
+public class $className {
+${basicAttribs.collect{"\tprivate String ${it.attribName};"}.join('\n')}
+${complexAttribs.collect{"\tprivate ${it.className} ${it.attribName};"}.join('\n')}
 }
-println elements.size()
-//println XmlUtil.serialize(root)
+"""
+//    println template
+    File file
+    file = new File("./sxr/model")
+    file.mkdirs()
+    file = new File("./sxr/model/${className}.java")
+    if(!file.exists())
+        file.createNewFile()
+    file.write template
 
+    complexAttribs.each {
+        println it
+        if(it.node == null)
+            return
+        createPojoFile(it.node)
+    }
+}
 
+createPojoFile(root.Document)

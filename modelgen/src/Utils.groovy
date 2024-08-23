@@ -38,4 +38,34 @@ class Utils {
         return node.'**'.findAll{ it.name() == "Element" && it.DataType.text() != ""}
     }
 
+
+    static String convertToCamelCase(String text) {
+        def words = text.split("[ .,/]+")
+        return words.collect { it.replace("'", "").toLowerCase().capitalize() }
+                .join()
+                .uncapitalize()
+    }
+    static String convertToPascalCase(String text) {
+        def words = text.split("[ .,/]+")
+        return words.collect { it.replace("'", "").toLowerCase().capitalize() }
+                .join()
+    }
+    static void fillLists(elements, List basicAttribs, List complexAttribs) {
+        elements.each {
+            if (it.name() != 'Element')
+                return
+            Map data = [
+                    name      : it.Name.text(),
+                    className : convertToPascalCase(it.Name.text()),
+                    attribName: convertToCamelCase(it.Name.text()),
+                    parent    : it.parent().Name.te,
+                    term      : it.Term.text(),
+                    type      : it.DataType.text(),
+                    node      : it
+
+            ]
+            def addTo = (data.type != '') ? basicAttribs : complexAttribs
+            addTo << data
+        }
+    }
 }
