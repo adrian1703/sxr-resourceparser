@@ -17,7 +17,8 @@ class Utils {
             return (name instanceof QName &&
                     name.localPart == 'Include')
         }
-        includeNodes.each { Node node ->
+        includeNodes.each {
+            Node node = it as Node
             String includePath = node.text()
             Node nodeToInclude = parser.parse("$path/$includePath")
             node.replaceNode(nodeToInclude)
@@ -38,12 +39,21 @@ class Utils {
         return node.'**'.findAll{ it.name() == "Element" && it.DataType.text() != ""}
     }
 
-
+    static String convertToCamelCase(String text, boolean useTermText) {
+        if(useTermText)
+            return text.capitalize()
+        else convertToCamelCase(text)
+    }
     static String convertToCamelCase(String text) {
         def words = text.split("[ .,/:]+")
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
                 .uncapitalize()
+    }
+    static String convertToPascalCase(String text, boolean useTermText) {
+        if(useTermText)
+            return text.capitalize()
+        else convertToPascalCase(text)
     }
     static String convertToPascalCase(String text) {
         def words = text.split("[ .,/:]+")
@@ -55,11 +65,12 @@ class Utils {
             if (it.name() != 'Element')
                 return
             String termText = it.Term.text()
-            String nameText = it.Name.text() != '' ? it.Name.text() : termText[4..-1]
+            boolean useTermText = it.Name.text() == ''
+            String nameText = useTermText ? termText[4..-1] : it.Name.text()
             Map data = [
                     name      : nameText,
-                    className : convertToPascalCase(nameText),
-                    propName  : convertToCamelCase(nameText),
+                    className : convertToPascalCase(nameText, useTermText),
+                    propName  : convertToCamelCase(nameText, useTermText),
                     parent    : it.parent().Name.te,
                     term      : termText,
                     type      : it.DataType.text(),
