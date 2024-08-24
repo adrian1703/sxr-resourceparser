@@ -40,13 +40,15 @@ class Utils {
 
 
     static String convertToCamelCase(String text) {
-        def words = text.split("[ .,/]+")
+        def words = text.split("[ .,/:]+")
+        if(words.size() == 1)
+            return words[0].uncapitalize()
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
                 .uncapitalize()
     }
     static String convertToPascalCase(String text) {
-        def words = text.split("[ .,/]+")
+        def words = text.split("[ .,/:]+")
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
     }
@@ -54,18 +56,32 @@ class Utils {
         elements.each {
             if (it.name() != 'Element')
                 return
+            String termText = it.Term.text()
+            String nameText = it.Name.text() != '' ? it.Name.text() : termText[4..-1]
             Map data = [
-                    name      : it.Name.text(),
-                    className : convertToPascalCase(it.Name.text()),
-                    attribName: convertToCamelCase(it.Name.text()),
+                    name      : nameText,
+                    className : convertToPascalCase(nameText),
+                    attribName: convertToCamelCase(nameText),
                     parent    : it.parent().Name.te,
-                    term      : it.Term.text(),
+                    term      : termText,
                     type      : it.DataType.text(),
                     node      : it
 
             ]
-            def addTo = (data.type != '') ? basicAttribs : complexAttribs
+
+            boolean isLeaf = it.Element.isEmpty()
+            def addTo = isLeaf ? basicAttribs : complexAttribs
             addTo << data
         }
+    }
+
+    static void writeToFile(String template, String className) {
+        File file
+        file = new File("./sxr/model")
+        file.mkdirs()
+        file = new File("./sxr/model/${className}.java")
+        if(!file.exists())
+            file.createNewFile()
+        file.write template
     }
 }
