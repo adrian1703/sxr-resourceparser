@@ -36,8 +36,8 @@ def createPojoFile(Node node, Map data){
 ${complexAttribs.collect{"import $packageName.${it.className};"}.join("\n")}
 
 public class $className {
-${basicAttribs.collect{"\tprivate String ${it.attribName};"}.join('\n')}
-${complexAttribs.collect{"\tprivate ${it.className} ${it.attribName};"}.join('\n')}
+${basicAttribs.collect{"\tprivate String ${it.propName};"}.join('\n')}
+${complexAttribs.collect{"\tprivate ${it.className} ${it.propName};"}.join('\n')}
 }
 """
 
@@ -46,7 +46,7 @@ ${complexAttribs.collect{"\tprivate ${it.className} ${it.attribName};"}.join('\n
     complexAttribs.each {
         if(it.node == null)
             return
-        createPojoFile(it.node, it)
+        createPojoFile(it.node as Node, it as Map)
     }
 }
 

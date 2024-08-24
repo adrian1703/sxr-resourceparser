@@ -41,8 +41,6 @@ class Utils {
 
     static String convertToCamelCase(String text) {
         def words = text.split("[ .,/:]+")
-        if(words.size() == 1)
-            return words[0].uncapitalize()
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
                 .uncapitalize()
@@ -61,7 +59,7 @@ class Utils {
             Map data = [
                     name      : nameText,
                     className : convertToPascalCase(nameText),
-                    attribName: convertToCamelCase(nameText),
+                    propName  : convertToCamelCase(nameText),
                     parent    : it.parent().Name.te,
                     term      : termText,
                     type      : it.DataType.text(),
