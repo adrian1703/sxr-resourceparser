@@ -17,9 +17,6 @@ Node        root
 root   = Utils.readXml("ubl-invoice.xml")
 new Node(root.Document[0], 'Name', 'INVOICE')
 def elements = root.Document.'*'
-List basicAttribs = []
-List complexAttribs = []
-Utils.fillLists(elements, basicAttribs, complexAttribs)
 
 def createPojoFile(Node node, Map data){
     String packageName, template, className
@@ -36,7 +33,9 @@ def createPojoFile(Node node, Map data){
 ${complexAttribs.collect{"import $packageName.${it.className};"}.join("\n")}
 
 public class $className {
+\t/* =========== Basic Properties   =========== */
 ${basicAttribs.collect{"\tprivate String ${it.propName};"}.join('\n')}
+\t/* =========== Complex Properties =========== */
 ${complexAttribs.collect{"\tprivate ${it.className} ${it.propName};"}.join('\n')}
 }
 """
