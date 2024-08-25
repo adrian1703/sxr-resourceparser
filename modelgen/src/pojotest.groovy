@@ -15,8 +15,6 @@ int count = 0
 Node        root
 /* ========== script execution    =============== */
 root   = Utils.readXml("ubl-invoice.xml")
-new Node(root.Document[0], 'Name', 'INVOICE')
-def elements = root.Document.'*'
 
 def createPojoFile(Node node, Map data){
     String packageName, template, className
