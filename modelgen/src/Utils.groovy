@@ -6,11 +6,10 @@ import groovy.xml.slurpersupport.GPathResult
 /* only work with patch-2 of my fork */
 class Utils {
 
-    static Node readXml(String fileName) {
-        String path = "./../../resources/peppol-bis-invoice-3/structure/syntax"
-        String rootFile = "$path/$fileName"
+    static Node readXml(String path, String fileName) {
+
         XmlParser parser = new XmlParser(namespaceAware: false)
-        Node root = parser.parse(rootFile)
+        Node root = parser.parse("$path/$fileName")
         //resolving includes
         List<Node> includeNodes = root.'**'.findAll{ Node node ->
             def name = node.name()

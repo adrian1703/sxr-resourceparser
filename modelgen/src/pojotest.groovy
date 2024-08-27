@@ -3,6 +3,8 @@ import groovy.xml.XmlSlurper
 import groovy.xml.XmlUtil
 import groovy.xml.slurpersupport.GPathResult
 
+import static Utils.*
+
 
 /* ========== template attributes =============== */
 String name
@@ -14,12 +16,9 @@ int count = 0
 /* ========== helper attributes   =============== */
 Node        root
 /* ========== script execution    =============== */
-root   = Utils.readXml("ubl-invoice.xml")
-new Node(root.Document[0], 'Name', 'INVOICE')
-def elements = root.Document.'*'
-List basicAttribs = []
-List complexAttribs = []
-Utils.fillLists(elements, basicAttribs, complexAttribs)
+String path = args.length > 0 ? args[0] : "./../../resources/peppol-bis-invoice-3/structure/syntax"
+String rootFile = "ubl-invoice.xml"
+root   = readXml(path, rootFile)
 
 def createPojoFile(Node node, Map data){
     String packageName, template, className
@@ -29,19 +28,21 @@ def createPojoFile(Node node, Map data){
     if(className == '')
         println data
     packageName = 'sxr.model'
-    Utils.fillLists(node.'*', basicAttribs, complexAttribs)
+    fillLists(node.'*', basicAttribs, complexAttribs)
 
 
     template = """package $packageName;
 ${complexAttribs.collect{"import $packageName.${it.className};"}.join("\n")}
 
 public class $className {
+\t/* =========== Basic Properties   =========== */
 ${basicAttribs.collect{"\tprivate String ${it.propName};"}.join('\n')}
+\t/* =========== Complex Properties =========== */
 ${complexAttribs.collect{"\tprivate ${it.className} ${it.propName};"}.join('\n')}
 }
 """
 
-    Utils.writeToFile template, className
+    writeToFile template, className
 
     complexAttribs.each {
         if(it.node == null)
