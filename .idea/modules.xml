@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/modelgen/modelgen.iml" filepath="$PROJECT_DIR$/modelgen/modelgen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sxr-resourceparser.iml" filepath="$PROJECT_DIR$/sxr-resourceparser.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sxr-resourceparser.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sxr-resourceparser.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sxr-resourceparser.iml" filepath="$PROJECT_DIR$/.idea/modules/sxr-resourceparser.iml" />
     </modules>
   </component>
 </project>
