@@ -1,7 +1,6 @@
 import groovy.xml.XmlParser
 import groovy.namespace.QName
 import groovy.xml.XmlUtil
-import groovy.xml.slurpersupport.GPathResult
 
 /* only work with patch-2 of my fork */
 class Utils {
@@ -59,26 +58,30 @@ class Utils {
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
     }
-    static void fillLists(elements, List basicAttribs, List complexAttribs) {
+    static void fillLists(elements, List basicProperties, List complexProperties) {
         elements.each {
             if (it.name() != 'Element')
                 return
-            String termText = it.Term.text()
+            String termText     = it.Term.text()
             boolean useTermText = it.Name.text() == ''
-            String nameText = useTermText ? termText[4..-1] : it.Name.text()
+            String nameText     = useTermText ? termText[4..-1] : it.Name.text()
             Map data = [
-                    name      : nameText,
-                    className : convertToPascalCase(nameText, useTermText),
-                    propName  : convertToCamelCase(nameText, useTermText),
-                    parent    : it.parent().Name.te,
-                    term      : termText,
-                    type      : it.DataType.text(),
-                    node      : it
-
+                    name       : nameText,
+                    className  : convertToPascalCase(nameText, useTermText),
+                    propName   : convertToCamelCase(nameText, useTermText),
+                    parent     : it.parent().Name.text(),
+                    term       : termText,
+                    type       : it.DataType.text(),
+                    node       : it,
+                    attributes : []
             ]
+            for(Node attributes :  it.Attribute) {
+                Map attrib = [term : attributes.Term.text()]
+                data.attributes.add(attrib)
+            }
 
             boolean isLeaf = it.Element.isEmpty()
-            def addTo = isLeaf ? basicAttribs : complexAttribs
+            def addTo = isLeaf ? basicProperties : complexProperties
             addTo << data
         }
     }
