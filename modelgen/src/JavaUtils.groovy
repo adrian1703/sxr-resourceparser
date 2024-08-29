@@ -1,9 +1,14 @@
 class JavaUtils {
 
-    static String createJavaTemplate(String packageName, String className, List basicProperties, List complexProperties) {
+    static String createJavaTemplate(String packageName, Map data, List basicProperties, List complexProperties) {
+        String className, term
+        className = data.className
+        term      = data.term
+
         String template = """package $packageName;
 import sxr.model.*;
 
+@XmlElement ( term = "$term" )
 public class $className {
 \t/* =========== Basic Properties   =========== */
 ${createJavaBasicProperties(basicProperties)}
@@ -25,8 +30,9 @@ ${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join
         return s
     }
 
-    static String createXmlAttribInterface(String packageName) {
-        return """package $packageName;
+    static createXmlAttributeInterface(String packageName, String out) {
+        String template = """package $packageName;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -39,11 +45,42 @@ import java.lang.annotation.Repeatable;
 public @interface XmlAttribute {
     String term();
 }
+"""
+        Utils.writeToFile(template, out, "XmlAttribute")
+    }
+
+    static createXmlAttributesInterface(String packageName, String out) {
+        String template = """package $packageName;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface XmlAttributes {
     XmlAttribute[] value();
-}"""
+}
+"""
+        Utils.writeToFile(template, out,"XmlAttributes")
+    }
+
+    static createXmlElementInterface(String packageName, String out) {
+        String template = """package $packageName;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.TYPE})
+public @interface XmlElement {
+    String term();
+}
+"""
+        Utils.writeToFile(template, out,"XmlElement")
     }
 }
+

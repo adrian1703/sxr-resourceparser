@@ -86,11 +86,11 @@ class Utils {
         }
     }
 
-    static void writeToFile(String template, String className) {
+    static void writeToFile(String template, String out, String className) {
         File file
-        file = new File("./sxr/model")
+        file = new File("$out")
         file.mkdirs()
-        file = new File("./sxr/model/${className}.java")
+        file = new File("$out/${className}.java")
         if(!file.exists())
             file.createNewFile()
         file.write template

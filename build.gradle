@@ -17,7 +17,7 @@ java {
     sourceSets {
         main {
             java {
-                srcDir 'src/sxr'
+                srcDir 'src/sxr/model'
             }
         }
     }
@@ -35,8 +35,9 @@ task generateSources {
             executable = 'groovy.bat'
             args = ['-cp',
                     'modelgen/src',
-                    'modelgen/src/pojotest.groovy',
-                    './resources/peppol-bis-invoice-3/structure/syntax']
+                    'modelgen/src/GeneratePojo.groovy',
+                    './resources/peppol-bis-invoice-3/structure/syntax',
+                    'modelgen/src/sxr/model']
         }
     }
 }
