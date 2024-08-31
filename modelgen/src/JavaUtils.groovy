@@ -22,6 +22,7 @@ ${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join
     static String createJavaBasicProperties(List basicProperties) {
         String s = ""
         basicProperties.each { prop ->
+            s += "\t@XmlElement( term = \"${prop.term}\" )\n"
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
