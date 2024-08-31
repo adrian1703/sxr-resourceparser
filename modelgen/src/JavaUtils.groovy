@@ -1,14 +1,13 @@
 class JavaUtils {
 
     static String createJavaTemplate(String packageName, Map data, List basicProperties, List complexProperties) {
-        String className, term
+        String className
         className = data.className
-        term      = data.term
 
         String template = """package $packageName;
 import sxr.model.*;
 
-@XmlElement ( term = "$term" )
+${annotateXmlElement(data as Map)}
 public class $className {
 \t/* =========== Basic Properties   =========== */
 ${createJavaBasicProperties(basicProperties)}
@@ -22,12 +21,17 @@ ${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join
     static String createJavaBasicProperties(List basicProperties) {
         String s = ""
         basicProperties.each { prop ->
-            s += "\t@XmlElement( term = \"${prop.term}\" )\n"
+            s += "\t${annotateXmlElement(prop as Map)}\n"
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
             s += "\tprivate String ${prop.propName};" + "\n"
         }
+        return s
+    }
+
+    static String annotateXmlElement(Map data) {
+        String s = """@XmlElement( term = "${data.term}" , btRef = "${data.btRef}" )"""
         return s
     }
 
@@ -79,6 +83,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface XmlElement {
     String term();
+    String btRef();
 }
 """
         Utils.writeToFile(template, out,"XmlElement")

@@ -69,6 +69,9 @@ class Utils {
                     name       : nameText,
                     className  : convertToPascalCase(nameText, useTermText),
                     propName   : convertToCamelCase(nameText, useTermText),
+                    btRef      : it.Reference
+                            .find { it.@type == "BUSINESS_TERM" }
+                            ?.text()?.trim(),
                     parent     : it.parent().Name.text(),
                     term       : termText,
                     type       : it.DataType.text(),
