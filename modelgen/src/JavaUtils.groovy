@@ -5,7 +5,7 @@ class JavaUtils {
         className = data.className
 
         String template = """package $packageName;
-import sxr.model.*;
+import sxr.model.interfaces.*;
 
 ${annotateXmlElement(data as Map)}
 public class $className {
