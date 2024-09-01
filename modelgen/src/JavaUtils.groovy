@@ -31,7 +31,10 @@ ${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join
     }
 
     static String annotateXmlElement(Map data) {
-        String s = """@XmlElement( term = "${data.term}" , btRef = "${data.btRef}" )"""
+        boolean isMandatory = true
+        if(data.card?.startsWith('0'))
+            isMandatory = false
+        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", mandatory = $isMandatory )"""
         return s
     }
 
@@ -82,8 +85,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface XmlElement {
-    String term();
-    String btRef();
+    String  term();
+    String  btRef();
+    boolean mandatory();
 }
 """
         Utils.writeToFile(template, out,"XmlElement")

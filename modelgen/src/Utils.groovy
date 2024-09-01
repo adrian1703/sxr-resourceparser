@@ -72,6 +72,7 @@ class Utils {
                     btRef      : it.Reference
                             .find { it.@type == "BUSINESS_TERM" }
                             ?.text()?.trim(),
+                    card       : it.@cardinality,
                     parent     : it.parent().Name.text(),
                     term       : termText,
                     type       : it.DataType.text(),
