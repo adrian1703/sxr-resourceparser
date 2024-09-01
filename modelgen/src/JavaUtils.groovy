@@ -12,7 +12,7 @@ public class $className {
 \t/* =========== Basic Properties   =========== */
 ${createJavaBasicProperties(basicProperties)}
 \t/* =========== Complex Properties =========== */
-${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join('\n')}
+${createComplexProperties(complexProperties)}
 }
 """
         return template
@@ -26,6 +26,18 @@ ${complexProperties.collect { "\tprivate ${it.className} ${it.propName};" }.join
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
             s += "\tprivate String ${prop.propName};" + "\n"
+        }
+        return s
+    }
+
+    static String createComplexProperties(List complexProperties) {
+        String s = ""
+        complexProperties.each { prop ->
+            s += "\t${annotateXmlElement(prop as Map)}\n"
+            prop.attributes.each { attrib ->
+                s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
+            }
+            s += "\tprivate ${prop.className} ${prop.propName};" + "\n"
         }
         return s
     }
