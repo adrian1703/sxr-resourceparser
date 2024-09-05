@@ -32,6 +32,6 @@ static def createPojoFile(Node node, Map data, String packageName, String output
 createXmlAttributeInterface (packageName + ".interfaces", outputDir + "/interfaces")
 createXmlAttributesInterface(packageName + ".interfaces", outputDir + "/interfaces")
 createXmlElementInterface   (packageName + ".interfaces", outputDir + "/interfaces")
-createPojoFile(root.Document[0] as Node, [className: 'Invoice'] as Map, packageName + ".entities", outputDir + "/entities")
+createPojoFile(root.Document[0] as Node, [className: 'Invoice', order: -1] as Map, packageName + ".entities", outputDir + "/entities")
 
 return 'success'

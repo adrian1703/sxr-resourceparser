@@ -25,7 +25,7 @@ ${createComplexProperties(complexProperties)}
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
-            s += "\tprivate String ${prop.propName};" + "\n"
+            s += "\tpublic String ${prop.propName};" + "\n"
         }
         return s
     }
@@ -37,7 +37,7 @@ ${createComplexProperties(complexProperties)}
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
-            s += "\tprivate ${prop.className} ${prop.propName};" + "\n"
+            s += "\tpublic ${prop.className} ${prop.propName};" + "\n"
         }
         return s
     }
@@ -46,7 +46,7 @@ ${createComplexProperties(complexProperties)}
         boolean isMandatory = true
         if(data.card?.startsWith('0'))
             isMandatory = false
-        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", mandatory = $isMandatory )"""
+        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", order = ${data.order}, mandatory = $isMandatory )"""
         return s
     }
 
@@ -99,6 +99,7 @@ import java.lang.annotation.Target;
 public @interface XmlElement {
     String  term();
     String  btRef();
+    int     order();
     boolean mandatory();
 }
 """

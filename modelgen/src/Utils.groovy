@@ -59,6 +59,7 @@ class Utils {
                 .join()
     }
     static void fillLists(elements, List basicProperties, List complexProperties) {
+        int count = 0
         elements.each {
             if (it.name() != 'Element')
                 return
@@ -73,6 +74,7 @@ class Utils {
                             .find { it.@type == "BUSINESS_TERM" }
                             ?.text()?.trim(),
                     card       : it.@cardinality,
+                    order      : count++,
                     parent     : it.parent().Name.text(),
                     term       : termText,
                     type       : it.DataType.text(),
