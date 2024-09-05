@@ -84,7 +84,7 @@ public class Invoice {
 ## Building
 The classes can be compiled via _GeneratePojo.groovy_.
 
-Alternativly they are incorporated into a gradle build step
+Alternatively they are incorporated into a gradle build step
 ```bash
 gradle generateSources
 ```
