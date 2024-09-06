@@ -6,6 +6,7 @@ class JavaUtils {
 
         String template = """package $packageName;
 import sxr.model.interfaces.*;
+import java.util.List;
 
 ${annotateXmlElement(data as Map)}
 public class $className {
@@ -25,7 +26,7 @@ ${createComplexProperties(complexProperties)}
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
-            s += "\tpublic String ${prop.propName};" + "\n"
+            s += "\tpublic ${evalCardProperty("String", prop.card)} ${prop.propName};" + "\n"
         }
         return s
     }
@@ -37,8 +38,14 @@ ${createComplexProperties(complexProperties)}
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
-            s += "\tpublic ${prop.className} ${prop.propName};" + "\n"
+            s += "\tpublic ${evalCardProperty(prop.className, prop.card)} ${prop.propName};" + "\n"
         }
+        return s
+    }
+    static String evalCardProperty(String type, String card) {
+        String s = type
+        if(card?.matches("\\d+\\.\\.n"))
+            s = "List<$s>"
         return s
     }
 
