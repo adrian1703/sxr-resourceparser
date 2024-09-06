@@ -50,10 +50,18 @@ ${createComplexProperties(complexProperties)}
     }
 
     static String annotateXmlElement(Map data) {
-        boolean isMandatory = true
-        if(data.card?.startsWith('0'))
-            isMandatory = false
-        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", order = ${data.order}, mandatory = $isMandatory )"""
+        String cardinality = data.card
+        int min, max
+        if (cardinality == null){
+            min = 1
+            max = 1
+        } else {
+            def vals = cardinality.split('\\.\\.')
+            min = vals[0] as int
+            max = vals[1] == 'n' ? -1 : vals[1] as int
+        }
+
+        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", order = ${data.order}, min = $min, max = $max )"""
         return s
     }
 
@@ -107,7 +115,8 @@ public @interface XmlElement {
     String  term();
     String  btRef();
     int     order();
-    boolean mandatory();
+    int     min();
+    int     max();
 }
 """
         Utils.writeToFile(template, out,"XmlElement")
