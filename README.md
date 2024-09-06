@@ -1,7 +1,7 @@
 # Modelgeneration for SXR
 ## Current Approach
 Protobuf java classes seemed difficult to work with, so instead im gonna parse the 
-Pojo classes myself and using annoations to create structure for further parsing.
+Pojo classes myself and using annotations to create structure for further parsing.
 
 E.g.
 ```java
