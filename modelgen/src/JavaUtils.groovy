@@ -6,6 +6,7 @@ class JavaUtils {
 
         String template = """package $packageName;
 import sxr.model.interfaces.*;
+import sxr.model.codes.*;
 import java.util.List;
 
 ${annotateXmlElement(data as Map)}
@@ -20,15 +21,58 @@ ${createComplexProperties(complexProperties)}
     }
 
     static String createJavaBasicProperties(List basicProperties) {
+        Map typeMap = [
+                default    : 'null',
+                Text       : 'String',
+                Boolean    : 'boolean',
+                Identifier : 'String',
+                Amount     : 'float' ,
+                Percentage : 'int',
+                Quantity   : 'int',
+                Date       : 'java.util.Date',
+                "Binary object" : 'byte[]',
+                "Document Reference" : 'String'
+        ]
         String s = ""
         basicProperties.each { prop ->
+            String type = convertDataType(prop)
             s += "\t${annotateXmlElement(prop as Map)}\n"
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
             }
-            s += "\tpublic ${evalCardProperty("String", prop.card)} ${prop.propName};" + "\n"
+            s += "\tpublic ${evalCardProperty(type, prop.card)} ${prop.propName};" + "\n"
         }
         return s
+    }
+
+    static String convertDataType(Map prop) {
+        Map typeMap = [
+                default    : 'null',
+                Text       : 'String',
+                Boolean    : 'boolean',
+                Identifier : 'String',
+                Amount     : 'float' ,
+                Percentage : 'int',
+                Quantity   : 'int',
+                Date       : 'java.util.Date',
+                "Binary object" : 'byte[]',
+                "Document Reference" : 'String'
+        ]
+        String type = typeMap.getOrDefault(prop.type, null);
+
+        if (type != null)
+            return type
+
+        if (prop.type == "Code" && prop.codetype != null)
+            return getCodeClassName((String) prop.codetype)
+
+        type = switch (prop.term) {
+            case "cbc:ChargeIndicator" -> "boolean"
+            case "cbc:ID" -> "String"
+            case "cbc:DocumentTypeCode" -> "String"
+            default -> typeMap.get("default") // we should never get to this
+        }
+        return type
     }
 
     static String createComplexProperties(List complexProperties) {

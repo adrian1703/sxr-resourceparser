@@ -78,6 +78,9 @@ class Utils {
                     parent     : it.parent().Name.text(),
                     term       : termText,
                     type       : it.DataType.text(),
+                    codetype   : it.Reference
+                            .find { it.@type == "CODE_LIST" }
+                            ?.text()?.trim(),
                     node       : it,
                     attributes : []
             ]
