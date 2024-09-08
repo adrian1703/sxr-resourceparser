@@ -37,7 +37,7 @@ createPojoFile(root.Document[0] as Node, [className: 'Invoice', order: -1] as Ma
 
 // copy to submodule
 def sourceDir = "$outputDir/../../sxr"
-def targetDir = "$outputDir/../../../../sxr-javamodel/sxr"
+def targetDir = "$outputDir/../../../../sxr-javamodel/scr/sxr"
 
 deleteDirectory(targetDir)
 copyDirectory(sourceDir, targetDir)
