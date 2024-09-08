@@ -1,3 +1,6 @@
 [submodule "sxr-javamodel"]
 	path = sxr-javamodel
 	url = git@github.com:adrian1703/sxr-javamodel.git
+[submodule "peppol-bis-invoice-3-adrian1703"]
+	path = resources/peppol-bis-invoice-3
+	url = git@github.com:adrian1703/peppol-bis-invoice-3.git
