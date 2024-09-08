@@ -1,6 +1,7 @@
 import groovy.xml.XmlParser
 import groovy.namespace.QName
 import groovy.xml.XmlUtil
+import java.nio.file.*
 
 /* only work with patch-2 of my fork */
 class Utils {
@@ -103,5 +104,32 @@ class Utils {
         if(!file.exists())
             file.createNewFile()
         file.write template
+    }
+
+    static def deleteDirectory(String dirPath) {
+        Path dir = Paths.get(dirPath)
+        if (Files.exists(dir)) {
+            Files.walk(dir)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach { Files.delete(it) }
+            println "Directory '${dirPath}' deleted successfully."
+        } else {
+            println "Directory '${dirPath}' does not exist."
+        }
+    }
+
+    static def copyDirectory(String sourceDirPath, String targetDirPath) {
+        Path sourceDir = Paths.get(sourceDirPath)
+        Path targetDir = Paths.get(targetDirPath)
+
+        Files.walk(sourceDir).forEach { sourcePath ->
+            Path targetPath = targetDir.resolve(sourceDir.relativize(sourcePath))
+            if (Files.isDirectory(sourcePath)) {
+                Files.createDirectories(targetPath)
+            } else {
+                Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
+            }
+        }
+        println "Directory '${sourceDirPath}' copied to '${targetDirPath}' successfully."
     }
 }

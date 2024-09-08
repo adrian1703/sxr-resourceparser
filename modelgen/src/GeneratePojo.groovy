@@ -33,7 +33,12 @@ createXmlAttributeInterface (packageName + ".interfaces", outputDir + "/interfac
 createXmlAttributesInterface(packageName + ".interfaces", outputDir + "/interfaces")
 createXmlElementInterface   (packageName + ".interfaces", outputDir + "/interfaces")
 createCodeLists             (packageName + ".codes"     , outputDir + "/codes", "$path/../codelist")
-
 createPojoFile(root.Document[0] as Node, [className: 'Invoice', order: -1] as Map, packageName + ".entities", outputDir + "/entities")
 
+// copy to submodule
+def sourceDir = "$outputDir/../../sxr"
+def targetDir = "$outputDir/../../../../sxr-javamodel/sxr"
+
+deleteDirectory(targetDir)
+copyDirectory(sourceDir, targetDir)
 return 'success'
