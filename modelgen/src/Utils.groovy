@@ -103,7 +103,9 @@ class Utils {
         file = new File("$out/${className}.java")
         if(!file.exists())
             file.createNewFile()
-        file.write template
+        file.newPrintWriter("UTF-8").withWriter { writer ->
+            writer << template
+        }
     }
 
     static def deleteDirectory(String dirPath) {
