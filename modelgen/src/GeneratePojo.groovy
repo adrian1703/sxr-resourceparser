@@ -32,8 +32,9 @@ static def createPojoFile(Node node, Map data, String packageName, String output
 createXmlAttributeInterface (packageName + ".interfaces", outputDir + "/interfaces")
 createXmlAttributesInterface(packageName + ".interfaces", outputDir + "/interfaces")
 createXmlElementInterface   (packageName + ".interfaces", outputDir + "/interfaces")
+createSxrObject             (packageName + ".entities"  , outputDir + "/entities")
 createCodeLists             (packageName + ".codes"     , outputDir + "/codes", "$path/../codelist")
-createPojoFile(root.Document[0] as Node, [className: 'Invoice', order: -1] as Map, packageName + ".entities", outputDir + "/entities")
+createPojoFile(root.Document[0] as Node, [className: 'Invoice', order: -1] as Map, packageName + ".entities.invoice", outputDir + "/entities/invoice")
 
 // copy to submodule
 def sourceDir = "$outputDir/../../sxr"

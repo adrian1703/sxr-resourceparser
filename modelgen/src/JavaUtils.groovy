@@ -5,12 +5,13 @@ class JavaUtils {
         className = data.className
 
         String template = """package $packageName;
+import sxr.model.entities.SxrObject;
 import sxr.model.interfaces.*;
 import sxr.model.codes.*;
 import java.util.List;
 
 ${annotateXmlElement(data as Map)}
-public class $className {
+public class $className extends SxrObject {
 \t/* =========== Basic Properties   =========== */
 ${createJavaBasicProperties(basicProperties)}
 \t/* =========== Complex Properties =========== */
@@ -164,6 +165,20 @@ public @interface XmlElement {
 }
 """
         Utils.writeToFile(template, out,"XmlElement")
+    }
+
+    static createSxrObject(String packageName, String out) {
+        String template = """package $packageName;
+
+public abstract class SxrObject {
+    long  sxrId;
+    
+    public void setSxrId(long id) { sxrId = id; }
+    
+    public long getSxrId() { return sxrId; }
+}
+"""
+        Utils.writeToFile(template, out,"SxrObject")
     }
 
     static getCodeClassName(String identifier) {
