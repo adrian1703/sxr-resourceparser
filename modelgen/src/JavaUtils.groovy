@@ -22,21 +22,10 @@ ${createComplexProperties(complexProperties)}
     }
 
     static String createJavaBasicProperties(List basicProperties) {
-        Map typeMap = [
-                default    : 'null',
-                Text       : 'String',
-                Boolean    : 'boolean',
-                Identifier : 'String',
-                Amount     : 'float' ,
-                Percentage : 'int',
-                Quantity   : 'int',
-                Date       : 'java.util.Date',
-                "Binary object" : 'byte[]',
-                "Document Reference" : 'String'
-        ]
         String s = ""
         basicProperties.each { prop ->
             String type = convertDataType(prop)
+            prop.type   = convertConstructorType(type)
             s += "\t${annotateXmlElement(prop as Map)}\n"
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
@@ -76,9 +65,23 @@ ${createComplexProperties(complexProperties)}
         return type
     }
 
+    static String convertConstructorType(String type){
+        Map typeMap = [
+                'null'          : 'Object.class',
+                'String'        : 'String.class',
+                'boolean'       : 'Boolean.class',
+                'float'         : 'Float.class',
+                'int'           : 'Integer.class',
+                'java.util.Date': 'java.util.Date.class',
+                'byte[]'        : 'byte[].class' //TODO: Later
+        ]
+        return typeMap[type]?: type + ".class"
+    }
+
     static String createComplexProperties(List complexProperties) {
         String s = ""
-        complexProperties.each { prop ->
+        complexProperties.each {Map prop ->
+            prop.type = prop.className + ".class"
             s += "\t${annotateXmlElement(prop as Map)}\n"
             prop.attributes.each { attrib ->
                 s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
@@ -106,7 +109,7 @@ ${createComplexProperties(complexProperties)}
             max = vals[1] == 'n' ? -1 : vals[1] as int
         }
 
-        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", order = ${data.order}, min = $min, max = $max )"""
+        String s = """@XmlElement(term = "${data.term}", btRef = "${data.btRef}", type = ${data.type}, order = ${data.order}, min = $min, max = $max )"""
         return s
     }
 
@@ -159,6 +162,7 @@ import java.lang.annotation.Target;
 public @interface XmlElement {
     String  term();
     String  btRef();
+    Class   type();
     int     order();
     int     min();
     int     max();
