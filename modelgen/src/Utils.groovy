@@ -59,7 +59,7 @@ class Utils {
         return words.collect { it.replace("'", "").toLowerCase().capitalize() }
                 .join()
     }
-    static void fillLists(elements, List basicProperties, List complexProperties) {
+    static void fillLists(elements, List basicProperties, List complexProperties, Map known) {
         int count = 0
         elements.each {
             if (it.name() != 'Element')
@@ -67,6 +67,9 @@ class Utils {
             String termText     = it.Term.text()
             boolean useTermText = it.Name.text() == ''
             String nameText     = useTermText ? termText[4..-1] : it.Name.text()
+            known[nameText]  = known.get(nameText, -1) + 1
+            if (known[nameText] > 0)
+                nameText = nameText + known[nameText]
             Map data = [
                     name       : nameText,
                     className  : convertToPascalCase(nameText, useTermText),

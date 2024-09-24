@@ -3,7 +3,7 @@ class JavaUtils {
     static String createJavaTemplate(String packageName, Map data, List basicProperties, List complexProperties) {
         String className
         className = data.className
-
+        data.order = -1
         String template = """package $packageName;
 import sxr.model.entities.SxrObject;
 import sxr.model.interfaces.*;
