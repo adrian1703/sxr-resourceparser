@@ -1,5 +1,7 @@
-import static Utils.*
-import static JavaUtils.*
+import static main.FileRWD.*
+import static main.Utils.fillLists
+import static main.java.JavaUtils.createJavaTemplate
+import static main.java.JavaUtilsStatic.*
 
 /* ========== helper attributes   =============== */
 Node        root
@@ -32,12 +34,11 @@ static def createPojoFile(Node node, Map data, String packageName, String output
 }
 
 
-
 createXmlAttributeInterface (packageName + ".interfaces", outputDir + "/interfaces")
 createXmlAttributesInterface(packageName + ".interfaces", outputDir + "/interfaces")
 createXmlElementInterface   (packageName + ".interfaces", outputDir + "/interfaces")
-createSxrObject             (packageName + ".entities"  , outputDir + "/entities")
-createCodeLists             (packageName + ".codes"     , outputDir + "/codes", "$path/../codelist")
+createSxrObject             (packageName + ".entities", outputDir + "/entities")
+createCodeLists             (packageName + ".codes", outputDir + "/codes", "$path/../codelist")
 createPojoFile(root.Document[0] as Node,
                [className: 'Invoice', type:'Invoice.class', order: -1] as Map,
                packageName + ".entities.invoice", outputDir + "/entities/invoice",
