@@ -40,7 +40,7 @@ ${createComplexProperties(complexProperties)}
 
     static String convertDataType(Map prop) {
         Map typeMap = [
-                default    : 'Object',
+                default    : 'String',
                 Text       : 'String',
                 Boolean    : 'boolean',
                 Identifier : 'String',
