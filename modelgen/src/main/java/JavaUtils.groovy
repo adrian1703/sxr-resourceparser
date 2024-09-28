@@ -28,10 +28,11 @@ ${createComplexProperties(complexProperties)}
         basicProperties.each { prop ->
             String type = convertDataType(prop)
             prop.type   = convertConstructorType(type)
-            s += "\t${annotateXmlElement(prop as Map)}\n"
             prop.attributes.each { attrib ->
-                s += "\t@XmlAttribute( term = \"${attrib.term}\" )" + "\n"
+                s += "\t@XmlAttribute( term = \"${attrib.term}\", btRef = \"${attrib.bt}\", type = ${convertConstructorType(convertDataType(attrib))}, parent = \"${prop.propName}\")" + "\n"
+                s += "\tpublic ${convertDataType(attrib)} ${attrib.name};" + "\n"
             }
+            s += "\t${annotateXmlElement(prop as Map)}\n"
             s += "\tpublic ${evalCardProperty(type, prop.card)} ${prop.propName};" + "\n"
         }
         return s
@@ -39,7 +40,7 @@ ${createComplexProperties(complexProperties)}
 
     static String convertDataType(Map prop) {
         Map typeMap = [
-                default    : 'null',
+                default    : 'Object',
                 Text       : 'String',
                 Boolean    : 'boolean',
                 Identifier : 'String',

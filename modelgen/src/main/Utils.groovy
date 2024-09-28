@@ -37,7 +37,19 @@ class Utils {
                     attributes : []
             ]
             for(Node attributes :  it.Attribute) {
-                Map attrib = [term : attributes.Term.text()]
+                Map attrib = [
+
+                        term : attributes.Term.text(),
+                        name : data.propName +  "_" + attributes.Term.text(),
+                        type       : attributes.DataType.text(),
+                        codetype   : attributes.Reference
+                                       .find { it.@type == "CODE_LIST" }
+                                       ?.text()?.trim(),
+                        btRef      : attributes.Reference
+                                       .find { it.@type == "BUSINESS_TERM" }
+                                       ?.text()?.trim()
+
+                ]
                 data.attributes.add(attrib)
             }
 

@@ -18,6 +18,9 @@ import java.lang.annotation.Repeatable;
 @Repeatable(XmlAttributes.class)
 public @interface XmlAttribute {
     String term();
+    String btRef();
+    Class  type();
+    String parent();
 }
 """
         FileRWD.writeToFile(template, out, "XmlAttribute")
