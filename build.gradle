@@ -14,14 +14,15 @@ version = '1.0-SNAPSHOT'
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-    sourceSets {
-        main {
-            java {
-                srcDir 'src/sxr/model'
-            }
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['modelgen/scr', 'sxr-javamodel/src']
         }
     }
 }
+
 
 repositories {
     mavenCentral()
@@ -37,7 +38,7 @@ task generateSources {
                     'modelgen/src',
                     'modelgen/src/GeneratePojo.groovy',
                     './resources/peppol-bis-invoice-3/structure/syntax',
-                    'modelgen/src/sxr/model']
+                    'sxr-javamodel/src/sxr/invoice/ubl']
         }
     }
 }
