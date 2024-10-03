@@ -6,10 +6,11 @@ class JavaUtils {
         String className
         className = data.className
         data.order = -1
-        String template = """package $packageName;
+        String template = """/*********** GENERATED - DO NOT MODIFY ***********/
+package $packageName;
 import sxr.model.entities.SxrObject;
 import sxr.model.interfaces.*;
-import sxr.model.codes.*;
+import sxr.invoice.ubl.codes.*;
 import java.util.List;
 
 ${annotateXmlElement(data as Map)}
