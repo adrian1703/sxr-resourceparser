@@ -7,9 +7,9 @@ import static main.java.JavaUtilsStatic.createCodeLists
 Node        root
 /* ========== script execution    =============== */
 String path        = args.length > 0 ? args[0] : "./../../resources/peppol-bis-invoice-3/structure/syntax"
-String outputDir   = args.length > 1 ? args[1] : "./../../sxr-javamodel/src/sxr/invoice/ubl"
+String outputDir   = args.length > 1 ? args[1] : "./../../sxr-javamodel/src/sxr/invoice"
 String rootFile    = "ubl-invoice.xml"
-String packageName = 'sxr.invoice.ubl'
+String packageName = 'sxr.invoice'
 root               = readXml(path, rootFile)
 Map known          = [:]
 
@@ -35,10 +35,10 @@ static def createPojoFile(Node node, Map data, String packageName, String output
 
 
 deleteDirectory(outputDir)
-createCodeLists(packageName + ".codes", outputDir + "/codes", "$path/../codelist")
+createCodeLists('sxr.core.model.codes', outputDir + "/../core/model/codes", "$path/../codelist")
 createPojoFile(root.Document[0] as Node,
                [className: 'Invoice', type:'Invoice.class', order: -1] as Map,
-               packageName + ".entities", outputDir + "/entities",
+               packageName + ".model.entities", outputDir + "/model/entities",
                known)
 println known
 println "path: $path"

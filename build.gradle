@@ -38,7 +38,7 @@ task generateSources {
                     'modelgen/src',
                     'modelgen/src/GeneratePojo.groovy',
                     './resources/peppol-bis-invoice-3/structure/syntax',
-                    'sxr-javamodel/src/sxr/invoice/ubl']
+                    'sxr-javamodel/src/sxr/invoice']
         }
     }
 }
