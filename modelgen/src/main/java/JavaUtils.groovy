@@ -8,9 +8,9 @@ class JavaUtils {
         data.order = -1
         String template = """/*********** GENERATED - DO NOT MODIFY ***********/
 package $packageName;
-import sxr.model.entities.SxrObject;
-import sxr.model.interfaces.*;
-import sxr.invoice.ubl.codes.*;
+import sxr.core.model.entities.SxrObject;
+import sxr.core.model.interfaces.*;
+import sxr.core.model.codes.*;
 import java.util.List;
 
 ${annotateXmlElement(data as Map)}
