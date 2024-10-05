@@ -34,7 +34,7 @@ static def createPojoFile(Node node, Map data, String packageName, String output
 }
 
 
-deleteDirectory(outputDir)
+deleteDirectory(outputDir + "/model/entities")
 createCodeLists('sxr.core.model.codes', outputDir + "/../core/model/codes", "$path/../codelist")
 createPojoFile(root.Document[0] as Node,
                [className: 'Invoice', type:'Invoice.class', order: -1] as Map,
